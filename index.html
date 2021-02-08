@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <!--可无视-->
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+
+    <!--布局样式，意义不大-->
+    <link rel="stylesheet" href="css/demo.css">
+
+    <!--核心样式-->
+    <link rel="stylesheet" href="dist/css/ckin.css">
+    <link rel="stylesheet" href="css/menu.css">
+</head>
+<body onload="draw();" >
+<div id="painter" style="position: absolute;" v-show="isShow"></div>
+<div class="introduce_mes" id="introduce" v-if="isShow">
+    <!-- <div id="painter" style="position: absolute;top:0;left:0;" v-show="isShow"></div> -->
+    <!-- <div class="introduce_mes" id="introduce" v-if="isShow">-->
+    <div >
+        <span style="color: white;font-size: 2rem;position: relative;top: 20%;">
+        欢迎使用3d虚拟工具器仿真系统
+        </span>
+        <div class="start_button" @click="Enter()">
+            Enter
+        </div>
+    </div>
+</div>
+
+<div class="backEnd" id="backEnd" v-show="isShow">
+    <iframe  name="con"  style="width: 100%;height: 100%;border: none;"></iframe>
+</div>
+
+<div class="menu_tab">
+<img src="img/材料库房.png" style="position: absolute;left: 10px">
+    3d库房培训系统
+</div>
+<div class="left_menu" id="function_select" >
+    <div class="function" :class = "{'active':index==current_index}" v-for="(item,index) in function_list" @click="functionSelected(item,index)" v-cloak>
+        <div class="div_icon" >
+            <img class="icon_function" :src="item.img">
+        </div>
+        <div class="span_function" v-text="item.name" @click="Training(item.name)"></div>
+    </div>
+</div>
+<div id="menu"  v-cloak>
+    <div  id="model_function_select" class="model_function_select"  v-show="isSelectShow">
+        <div class="model_function_card">
+            <img src="img/关闭.png" style="width: 30px;float: right;position: relative;right:20px;top: 10px" @click="functionClose()">
+            <div style="color: #363636;width: 100%;text-align: center;font-size: 2rem;height: 40px" v-text="selectModelInformation.selectModelName">
+            </div>
+            <div style="color: #d2d2d2;width: 100%;text-align: center;height: 100px" v-text="selectModelInformation.selectModelIntroduce">
+            </div>
+            <div style="width: 100%">
+                <div class="div_function_select" v-if="!selectModelInformation.selectModelIsShelf">
+                    <div class="btn_function_select" @click="Catch" >
+                        拿走
+                    </div>
+                </div>
+                <div class="div_function_select" v-if="!selectModelInformation.selectModelIsShelf">
+                    <div class="btn_function_select" @click="Detail">
+                        详细信息
+                    </div>
+                </div>
+                <div class="div_function_select" v-if="selectModelInformation.selectModelIsShelf">
+                    <div class="btn_function_select" @click="OpenBag">
+                        放回器具
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flow_card">
+        <div class="flow_card_item" v-for="(item,index) in objectArray" :class = "{'item_active':index==current_index}">
+            <div class="flow_circle" v-text="index+1"></div>
+            <div class="flow_text" v-text="'请选择'+item"></div>
+        </div>
+    </div>
+    <div class="object_select" v-show="isShowCatchPart">
+        <iframe  name="object_select"  style="width: 100%; height: 100%; border: medium none;border-radius: 20px;box-shadow: 0 15px 30px 1px grey;"></iframe>
+    </div>
+    <div id="container"  v-show="isShow">
+        <div class="product-details" v-if="!isShowVideo"  v-cloak>
+
+            <h1 v-text="selectModelInformation.selectModelName"></h1>
+
+
+            <p class="information" v-text="selectModelInformation.selectModelIntroduce"></p>
+
+            <div class="control">
+
+                <button class="btn" @click="ShowVideo()">
+                    <span class="buy">播放视频</span>
+                </button  >
+                <button class="btn">
+                    <span class="buy" @click="CloseDetails">关闭</span>
+                </button>
+            </div>
+
+        </div>
+        <div class="product-image" v-if="!isShowVideo">
+            <img :src="'lib/model/'+selectModelInformation.selectModelName+'/image.png'" alt="">
+            <div class="info">
+                <h2>工器具介绍</h2>
+                <ul>
+                    <li><strong>长度 : </strong>test </li>
+                    <li><strong>重量 : </strong>test</li>
+                    <li><strong>种类: </strong>test</li>
+                    <li><strong>材料: </strong>test</li>
+                </ul>
+            </div>
+        </div>
+        <div v-show="isShowVideo" class="video_window">
+            <div class="menu" v>
+                <div  class="back"><img style="width: 100%" src="img/返回.png" @click="Back()"></div>
+                <div  class="close"><img style="width: 100%" src="img/关闭.png" @click="Close()"></div>
+            </div>
+            <div class="dialog_container" id="dialog_container">
+                <video  id="video" poster="ckin.jpg" src="ckin.mp4" data-ckin="default" data-overlay="1">
+                </video>
+            </div>
+        </div>
+    </div>
+    <div>
+        <img src="img/书包.png" style="position: absolute;bottom: 50px;right: 100px;" @click="OpenBag">
+    </div>
+</div>
+
+</body>
+<script src="lib/three.js"></script>
+<script src="lib/js/loaders/OBJLoader.js"></script>
+<script src="lib/js/loaders/MTLLoader.js"></script>
+<script src="lib/js/controls/FirstPersonControls.js"></script>
+<script src="lib/js/controls/OrbitControls.js"></script>
+<script src="lib/js/libs/stats.min.js"></script>
+<script src="lib/js/libs/dat.gui.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/webgl_part.js"></script>
+<script src="js/function_select.js"></script>
+<script src="js/introduce.js"></script>
+<script src="js/painter.js"></script>
+<script src="js/backEnd.js"></script>
+<script src="dist/js/ckin.js"></script>
+</html>

@@ -1,0 +1,90 @@
+.menu_tab {
+    width: 100%;
+    height: 15%;
+    background-color: #ad070d;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    /*实现垂直居中*/
+    align-items: center;
+    font-size: 1.8rem;
+    font-weight: 500;
+    font-family: Arial;
+    color: white;
+    padding-left: 100px;
+}
+.left_menu {
+    position: absolute;
+    top:15%;
+    left: 0;
+
+    height: 85%;
+    width: 10%;
+    background-color: #f3ecec;
+    overflow: auto;
+    /*width: 10%;*/
+    /*height: 20%;*/
+}
+.start_button{
+    position:relative;
+    margin: auto;
+    top: 60%;
+    width: 100px;
+    height: 100px;
+    background-color: #ad070d;
+    border-radius: 50%;
+    display: flex;
+    /*实现垂直居中*/
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border: 1px solid #f9f8f4;
+    box-shadow: 5px 5px 2px #888888;
+}
+
+.start_button:hover{
+    transform: scale(1.25,1.25);
+    cursor: pointer;
+}
+.start_button:active{
+    transform: scale(1,1);
+    box-shadow: 2px 2px 1px #888888;
+}
+
+.icon_function{
+    width: 30px;
+    height: 30px;
+
+}
+
+.div_icon{
+    float: left;
+    width: 40%;
+    height: 100%;
+    display: flex;
+    /*实现垂直居中*/
+    align-items: center;
+    justify-content: center;
+}
+
+.span_function{
+    float: left;
+    width: 60%;
+    height: 100%;
+    display: flex;
+    /*实现垂直居中*/
+    align-items: center;
+}
+
+.function{
+    width: 100%;
+    height: 80px
+}
+.function:hover{
+    background-color: #e2dbdb;
+    cursor: pointer;
+}
+ .active{
+    background-color: #e2dbdb;
+}

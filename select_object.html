@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/select_object.css">
+<style>
+
+</style>
+</head>
+<body>
+
+<div id ="grid" class="grid" >
+    <label class="card" v-for="(item,index) in gridData" v-cloak>
+        <input name="card__input" class="card__input" type="checkbox"  autocomplete="off"/>
+        <div class="card__body" v-if="item != null" >
+            <div class="card__body-cover">
+                <img class="card__body-cover-image" :src="'lib/model/'+item.name+'/image.png'"/>
+                <span class="card__body-cover-chackbox">
+          <svg class="card__body-cover-chackbox--svg" viewBox="0 0 12 10">
+            <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+          </svg></span></div>
+            <header class="card__body-header">
+                <p class="card__body-header-subtitle"  v-text="item.name"></p>
+            </header>
+        </div>
+    </label>
+    <button  style="margin: 15px;height: 35px;font-size: 1.25rem;color: #595454;" @click="Return">归还</button>
+    <div style="/*! width: 100%; */"></div>
+    <button  style="margin: 15px;height: 35px;font-size: 1.25rem;color: #595454;" @click="Close">关闭</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var app = new Vue({
+        el:'#grid',
+        data:{
+            gridData :[]
+        },
+        created(){
+
+            for(key in parent.window.catchModels){
+                if(Array.from(parent.window.shelvesName).includes(parent.window.selectModel.realName)){
+                    if (key != parent.window.selectModel.realName){
+                        continue;
+                    }
+                }
+                for (value in parent.window.catchModels[key]){
+                    if(parent.window.catchModels[key][value].length>0){
+                        this.gridData.push({
+                            name:value,
+                            shelves: key
+                        });
+                    }
+                }
+
+            }
+            var length = (3-this.gridData.length%3)%3;
+            for(var i=0;i<length;i++){
+                this.gridData.push(null)
+            }
+        },
+        methods:{
+            Return:function(){
+                var obj = document.getElementsByName("card__input");
+                var check_val = [];
+                obj.forEach(function (child) {
+                    check_val.push(child.checked);
+                });
+                returnData = [];
+                var copyData = JSON.parse(JSON.stringify(this.gridData));
+                for(var i =0;i<copyData.length;i++){
+                    if(check_val[i]){
+                        returnData.push(copyData[i]);
+                        this.gridData.splice(i,1);
+                    }
+                }
+                parent.window.app.isShowCatchPart = false;
+                returnData.forEach(function (child) {
+                    parent.window.putBack(child.shelves,child.name);
+                });
+                parent.window.ChangeProperty(parent.window.selectModel.material, {transparent:false,opacity:1});
+            },
+            Close:function () {
+                parent.window.app.isShowCatchPart = false;
+                parent.window.ChangeProperty(parent.window.selectModel.material, {transparent:false,opacity:1});
+            }
+        },
+    });
+
+</script>
+</body>
+</html>
