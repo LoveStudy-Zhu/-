@@ -46,6 +46,9 @@
     </div>
 </div>
 <div id="menu"  v-cloak>
+    <select id="select_scene" style="position:absolute;right:0;top:0;margin: 20px; font-size: 1.25rem;"@change="UpdateScene">
+        <option value="衣架_1" style="font-size: 1.25rem;" v-for="(item,index) in sceneArray" :value="item" v-text="item"></option>
+    </select>
     <div  id="model_function_select" class="model_function_select"  v-show="isSelectShow">
         <div class="model_function_card">
             <img src="img/关闭.png" style="width: 30px;float: right;position: relative;right:20px;top: 10px" @click="functionClose()">
@@ -87,7 +90,7 @@
             <h1 v-text="selectModelInformation.selectModelName"></h1>
 
 
-            <p class="information" v-text="selectModelInformation.selectModelIntroduce"></p>
+            <p class="information" v-text="selectModelInformation.selectModelDetials"></p>
 
             <div class="control">
 
@@ -129,6 +132,7 @@
 </div>
 
 </body>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
 <script src="lib/three.js"></script>
 <script src="lib/js/loaders/OBJLoader.js"></script>
 <script src="lib/js/loaders/MTLLoader.js"></script>
@@ -137,6 +141,7 @@
 <script src="lib/js/libs/stats.min.js"></script>
 <script src="lib/js/libs/dat.gui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/data_json.js"></script>
 <script src="js/webgl_part.js"></script>
 <script src="js/function_select.js"></script>
 <script src="js/introduce.js"></script>

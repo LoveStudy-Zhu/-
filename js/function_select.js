@@ -10,11 +10,8 @@ var app2 = new Vue({
                     {'name':'器具信息','img':'img/后台.png'}
                 ],
             trainItems:{
-                'item0':['安全帽','绝缘衣','绝缘鞋子','绝缘手套','绝缘毯'],
-                'item1':[''],
-                'item2':[],
-                'item3':[],
-                'item4':[],
+                '绝缘操作':['安全帽','绝缘衣','绝缘鞋子','绝缘手套','绝缘毯'],
+                '电焊操作':['电焊帽','焊钳'],
             }
         },
         methods:{
@@ -45,8 +42,8 @@ var app2 = new Vue({
                 }
                 if(item.name == '操作培训'){
                     var itemList = [{'name':'返回','img':'img/back.png'}];
-                    for(var i = 0;i < 15;i++ ){
-                        itemList.push({'name':'item'+i,'img':'img/op_item.png'})
+                    for (key in this.trainItems){
+                        itemList.push({'name':key,'img':'img/op_item.png'})
                     }
                     this.function_list = itemList
                 }else if(item.name =='返回'){
